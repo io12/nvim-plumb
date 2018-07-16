@@ -2,6 +2,23 @@ import neovim
 import os
 from subprocess import *
 
+# Get the space-separated word at an index in a line
+def get_word(line, index):
+    # Get lower bound of word
+    lo = 0
+    for i in range(index, 0, -1):
+        if line[i - 1].isspace():
+            lo = i
+            break
+    # Get upper bound of word
+    hi = len(line) - 1
+    for i in range(index, len(line) - 1):
+        if line[i + 1].isspace():
+            hi = i
+            break
+    return line[lo:hi]
+
+
 @neovim.plugin
 class Plumb(object):
     def __init__(self, nvim):
@@ -9,9 +26,10 @@ class Plumb(object):
 
     @neovim.command('Plumb')
     def plumb_command(self):
-        # Get string from cursor to end of line
+        # Get word under the cursor
         (_, col) = self.nvim.current.window.cursor
-        data = self.nvim.current.line[col:]
+        line = self.nvim.current.line
+        data = get_word(line, col)
         # Expand environment variables and '~'
         # TODO: Make plumb do this
         data = os.path.expanduser(data)
