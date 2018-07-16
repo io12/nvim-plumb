@@ -8,6 +8,6 @@ Run `:Plumb` to plumb the word under the cursor.
 
 ## Installation
 
-### Using (vim_plug)[https://github.com/junegunn/vim-plug]:
+### Using [vim-plug](https://github.com/junegunn/vim-plug):
 
 Add `Plug 'io12/nvim-plumb'` to your `init.vim` in the plugin section.
