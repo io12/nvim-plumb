@@ -16,7 +16,7 @@ def get_word(line, index):
         if line[i + 1].isspace():
             hi = i
             break
-    return line[lo:hi]
+    return line[lo:hi + 1]
 
 
 @neovim.plugin
@@ -37,4 +37,6 @@ class Plumb(object):
         # Run plumb and write errors
         p = Popen(['plumb', data], stdout=PIPE, stderr=PIPE)
         (stdout_data, stderr_data) = p.communicate()
-        self.nvim.err_write(stderr_data)
+        if p.returncode != 0:
+            err_msg = '"' + data + '": ' + stderr_data.decode('utf-8')
+            self.nvim.err_write(err_msg)
